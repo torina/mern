@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { loginUser } from "../../actions/authActions";
+import { logoutUser } from "../../actions/authActions";
+
 class Navbar extends Component {
   render() {
+    const { user } = this.props.auth;
+
+
     return (
       <div className="navbar-fixed">
         <nav className="z-depth-0">
@@ -14,11 +22,35 @@ class Navbar extends Component {
               <i className="material-icons">code</i>
               MERN JWT Auth
             </Link>
-          </div>
+
+            {/* <Link
+              to="/facebook.com"
+              style={{ fontFamily: "monospace" }}
+              className="col s5 brand-logo right black-text">
+              <i className="material-icons">code</i>
+              FB
+            </Link> */}
+
+          <Link to="/login" className="col s6 brand-logo right black-text">
+              {user.name !== undefined ? 'Hi, '+user.name : 'Login'}
+          </Link>    
+          </div>          
         </nav>
       </div>
     );
   }
 }
+Navbar.propTypes = {
+  // logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
 
-export default Navbar;
+const mapStateToProps = (state) => ({
+  loginUser: PropTypes.func.isRequired,
+  errors: state.errors,
+  auth: state.auth,
+});
+
+// export default Navbar;
+
+export default connect(mapStateToProps, { loginUser, logoutUser })(Navbar);
